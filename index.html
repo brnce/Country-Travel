@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Earth Scratcher</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            text-align: center;
+            margin-top: 50px;
+        }
+
+        .container {
+            max-width: 80%;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgb(0, 0, 0, 0.1);
+        }
+
+        .city {
+            max-width: 600px;
+            display: inline-block;
+            margin: 10px;
+            border: 1px solid #ccc;
+            padding: 10px;
+            border-radius: 5px;
+            background-color: #fff;
+            width: calc(33% - 20px);
+        }
+
+        .city img {
+            max-width: 100%;
+            height: auto;
+            max-height: 150px;
+            margin-bottom: 10px;
+        }
+
+        #selectedCity {
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #f8f8f8;
+            border-radius: 5px;
+            max-width: 70%;
+        }
+
+        #selectedCity p {
+            color: #333;
+            padding: 10px;
+        }
+
+        #selectedCity img {
+            display: block;
+            margin: 0 auto 10px;
+            max-width: 100%;
+            height: auto;
+            max-height: 300px;
+        }
+
+        #additionalText {
+            margin-top: 30px;
+            font-family: Verdana, Geneva, Tahoma, sans-serif;
+        }
+
+        h1 {
+            color: #333;
+        }
+
+        .btn {
+            margin-top: 20px;
+            margin-bottom: 20px;
+            padding: 10px 20px;
+            background-color: #fff;
+            border: 1px solid #222222;
+            color: #52606e;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s;
+        }
+
+        .btn:hover {
+            background-color: rgb(51, 61, 80);
+            color: #fff;
+        }
+
+        .book-now {
+            display: inline-block;
+            margin-top: 10px;
+            padding: 8px 16px;
+            color: #c9995f;
+            text-decoration: none;
+            border-radius: 4px;
+            transition: background-color 0.3s, font-size 0.3s;
+            margin-bottom: 10px;
+        }
+
+        .book-now:hover {
+            background-color: #574d41;
+            font-size: 18px;
+        }
+
+        .quiz-btn {
+            margin-top: 20px;
+            margin-bottom: 20px;
+            padding: 10px 20px;
+            background-color: #c9995f;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s;
+        }
+
+
+        .quiz-btn:hover {
+            background-color: #e2d3c1;
+        }
+
+        /* Quiz Pop-up Styling */
+        .popup {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 9999;
+        }
+
+        .popup-content {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: #f8f8f8;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+            max-width: 400px;
+            text-align: left;
+        }
+
+        .close {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            cursor: pointer;
+            font-size: 20px;
+        }
+
+        .question {
+            margin-bottom: 20px;
+        }
+
+        .answers label {
+            margin-top: 10px;
+            display: inline-block;
+            margin-right: 20px;
+        }
+
+        .answers input[type="radio"] {
+            margin-right: 5px;
+            transform: scale(1.5);
+        }
+
+        #congrats {
+            color: #4CAF50;
+            font-size: 24px;
+            margin-top: 20px;
+        }
+
+        footer {
+            margin-top: 50px;
+            background-color: #333;
+            color: #fff;
+            padding: 10px 0;
+        }
+
+        /* Responsive Styles */
+        @media screen and (max-width: 768px) {
+            .container {
+                padding: 10px;
+            }
+
+            .city {
+                width: calc(50% - 20px);
+            }
+        }
+
+        @media screen and (max-width: 480px) {
+            .city {
+                width: calc(100% - 50px);
+            }
+
+            #selectedCity img {
+                max-height: 200px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <script src="https://kit.fontawesome.com/11d5deca7d.js" crossorigin="anonymous"></script>
+    <div class="container">
+        <h1>Welcome to <span style="color: rgb(36, 79, 65);">Earth Scratcher</span></h1>
+        <h2>Are you ready for your next city adventure?</h2>
+
+        <!-- Quiz Button -->
+        <button class="quiz-btn" onclick="openQuiz()">Take Quiz</button>
+
+        <div id="additionalText">
+            <p>Explore the beauty of the world by visiting one of these amazing cities! <i class="fa-solid fa-plane" style="color: #ffaa00;"></i></p>
+        </div>
+
+        <div id="cities"></div>
+        <div id="congrats" style="display: none;">Congratulations! You're going to:</div>
+        <div id="selectedCity"></div>
+
+        <h3>Click the button to randomly select a city and start your adventure.</h3>
+
+        <button class="btn" onclick="selectRandomCity()">Select Random City</button>
+
+
+
+    </div>
+
+
+
+
+    <!-- Quiz Pop-up -->
+    <div id="quizPopup" class="popup">
+        <div class="popup-content">
+            <span class="close" onclick="closeQuiz()">&times;</span>
+            <h2 style="text-align: center;">Quiz</h2>
+            <p style="color: #333; text-align: center;">Answer the following questions:</p>
+            <form id="quizForm">
+                <div class="question">
+                    <label for="q1">Question 1: What is the capital of Germany?</label><br>
+                    <div class="answers">
+                        <input type="radio" id="q1a" name="q1" value="Berlin"> <label for="q1a">Berlin</label><br>
+                        <input type="radio" id="q1b" name="q1" value="Paris"> <label for="q1b">Paris</label><br>
+                        <input type="radio" id="q1c" name="q1" value="Rome"> <label for="q1c">Rome</label><br>
+                    </div>
+                </div>
+
+                <div class="question">
+                    <label for="q2">Question 2: What is the currency of Hungary?</label><br>
+                    <div class="answers">
+                        <input type="radio" id="q2a" name="q2" value="Euro"> <label for="q2a">Euro</label><br>
+                        <input type="radio" id="q2b" name="q2" value="Forint"> <label for="q2b">Forint</label><br>
+                        <input type="radio" id="q2c" name="q2" value="Pound"> <label for="q2c">Pound</label><br>
+                    </div>
+                </div>
+
+                <div class="question">
+                    <label for="q3">Question 3: What river runs through Prague?</label><br>
+                    <div class="answers">
+                        <input type="radio" id="q3a" name="q3" value="Danube"> <label for="q3a">Danube</label><br>
+                        <input type="radio" id="q3b" name="q3" value="Vltava"> <label for="q3b">Vltava</label><br>
+                        <input type="radio" id="q3c" name="q3" value="Seine"> <label for="q3c">Seine</label><br>
+                    </div>
+                </div>
+
+                <button type="submit" class="btn">Submit</button>
+            </form>
+            <div id="quizResults" style="display: none;">
+                <h3 style="color: #4CAF50;">Quiz Results:</h3>
+                <p id="quizScore"></p>
+                <ul id="quizFeedback"></ul>
+                <button class="btn" onclick="retakeQuiz()">Retake Quiz</button>
+            </div>
+        </div>
+    </div>
+    </div>
+
+
+    <!-- SweetAlert script -->
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+
+    <script>
+        const cities = [
+            { name: "Berlin - Germany", image: "berlin.jpeg", intro: "Willkommen in Berlin! The capital of Germany is a city of rich history, vibrant culture, and cutting-edge architecture. Explore landmarks like the Brandenburg Gate, Berlin Wall, and Museum Island.", link: "https://clicks.loveholidays.com/f/a/Xflhkj1GWzaamXSdBeX6eQ~~/AAAHagA~/RgRoB3EnP0TwaHR0cHM6Ly93d3cubG92ZWhvbGlkYXlzLmNvbS9ob2xpZGF5cy8_ZGVzdGluYXRpb25JZHM9MzAxOSZuaWdodHM9MyZyb29tcz0yJmZsZXhpYmlsaXR5PTAmc29ydD1QT1BVTEFSJmxpZD10NjRhemkzYzE4a28mdXRtX21lZGl1bT1lbWFpbCZ1dG1fc291cmNlPWJyYXplJmVpZD02MTA1ODcwMi1kZWRjLTRjMjQtOWJiZC03NjgzMmM3MDQ5OTMmdXRtX2NhbXBhaWduPU5MLUdCLUNpdHlfYnJlYWtzX1BhcnR5LTIwMjQwNDIxVwVzcGNldUIKZh8n7CRm0dxq8lITYmVzc2lsZWUyQHlhaG9vLmNvbVgEAAADjg~~" },
+            { name: "Budapest - Hungary", image: "budapest.jpeg", intro: "Üdvözöljük Budapesten! The capital of Hungary is a stunning city known for its beautiful architecture, thermal baths, and vibrant nightlife. Explore historic sites like Buda Castle, Fisherman's Bastion, and the Hungarian Parliament Building.", link: "https://clicks.loveholidays.com/f/a/znXY9ncPYh8LthfLM_RqFQ~~/AAAHagA~/RgRoB3EnP0TwaHR0cHM6Ly93d3cubG92ZWhvbGlkYXlzLmNvbS9ob2xpZGF5cy8_ZGVzdGluYXRpb25JZHM9MjgzOSZuaWdodHM9MyZyb29tcz0yJmZsZXhpYmlsaXR5PTAmc29ydD1QT1BVTEFSJmxpZD0zYTVlMTQ3ajdodmomdXRtX21lZGl1bT1lbWFpbCZ1dG1fc291cmNlPWJyYXplJmVpZD02MTA1ODcwMi1kZWRjLTRjMjQtOWJiZC03NjgzMmM3MDQ5OTMmdXRtX2NhbXBhaWduPU5MLUdCLUNpdHlfYnJlYWtzX1BhcnR5LTIwMjQwNDIxVwVzcGNldUIKZh8n7CRm0dxq8lITYmVzc2lsZWUyQHlhaG9vLmNvbVgEAAADjg~~" },
+            { name: "Prague - Czech Republic", image: "prague.jpeg", intro: "Vítejte v Praze! The capital city of the Czech Republic, Prague, is famous for its picturesque Old Town, charming cobblestone streets, and stunning Gothic architecture. Explore landmarks like Prague Castle, Charles Bridge, and the Astronomical Clock.", link: "https://clicks.loveholidays.com/f/a/QbP9oiIP9-GBx6VZR68zZA~~/AAAHagA~/RgRoB3EnP0TvaHR0cHM6Ly93d3cubG92ZWhvbGlkYXlzLmNvbS9ob2xpZGF5cy8_ZGVzdGluYXRpb25JZHM9MTQyJm5pZ2h0cz0zJnJvb21zPTImZmxleGliaWxpdHk9MCZzb3J0PVBPUFVMQVImbGlkPTFiN21hcnBqdTEzcCZ1dG1fbWVkaXVtPWVtYWlsJnV0bV9zb3VyY2U9YnJhemUmZWlkPTYxMDU4NzAyLWRlZGMtNGMyNC05YmJkLTc2ODMyYzcwNDk5MyZ1dG1fY2FtcGFpZ249TkwtR0ItQ2l0eV9icmVha3NfUGFydHktMjAyNDA0MjFXBXNwY2V1QgpmHyfsJGbR3GryUhNiZXNzaWxlZTJAeWFob28uY29tWAQAAAOO" },
+            { name: "Copenhagen - Denmark", image: "copenhagan.jpeg", intro: "Velkommen til København! The capital of Denmark is a beautiful coastal city known for its colorful harbor, historic landmarks, and cycling culture. Explore attractions like the Nyhavn waterfront, Tivoli Gardens, and the Little Mermaid statue.", link: "https://clicks.loveholidays.com/f/a/fAgNXTmLVrj3qwVcV-VLkQ~~/AAAHagA~/RgRoB3EnP0TwaHR0cHM6Ly93d3cubG92ZWhvbGlkYXlzLmNvbS9ob2xpZGF5cy8_ZGVzdGluYXRpb25JZHM9MzM2MyZuaWdodHM9MyZyb29tcz0yJmZsZXhpYmlsaXR5PTAmc29ydD1QT1BVTEFSJmxpZD12aDR4M2tqeng4dHYmdXRtX21lZGl1bT1lbWFpbCZ1dG1fc291cmNlPWJyYXplJmVpZD02MTA1ODcwMi1kZWRjLTRjMjQtOWJiZC03NjgzMmM3MDQ5OTMmdXRtX2NhbXBhaWduPU5MLUdCLUNpdHlfYnJlYWtzX1BhcnR5LTIwMjQwNDIxVwVzcGNldUIKZh8n7CRm0dxq8lITYmVzc2lsZWUyQHlhaG9vLmNvbVgEAAADjg~~" }
+        ];
+
+        function displayCities() {
+            const citiesDiv = document.getElementById('cities');
+            cities.forEach(city => {
+                const cityDiv = document.createElement('div');
+                cityDiv.classList.add('city');
+                cityDiv.innerHTML = `
+                    <img src="${city.image}" alt="${city.name}">
+                    <h3>${city.name}</h3>
+                    <p>${city.intro}</p>
+                    <a href="${city.link}" target="_blank" class="book-now">Book Now <i class="fa-solid fa-plane-departure"></i></a>
+                `;
+                citiesDiv.appendChild(cityDiv);
+            });
+        }
+
+        function selectRandomCity() {
+            const randomIndex = Math.floor(Math.random() * cities.length);
+            const selectedCity = cities[randomIndex];
+            const selectedCityDiv = document.getElementById('selectedCity');
+            const congratsDiv = document.getElementById('congrats');
+
+            // Hide previous congratulatory message
+            congratsDiv.style.display = 'none';
+
+            selectedCityDiv.innerHTML = `
+                <h2>Randomly Selected City:</h2>
+                <img src="${selectedCity.image}" alt="${selectedCity.name}">
+                <h3>${selectedCity.name}</h3>
+                <p>${selectedCity.intro}</p>
+                <a href="${selectedCity.link}" target="_blank" class="book-now">Book Now <i class="fa-solid fa-plane-departure"></i></a>
+
+            `;
+        }
+
+        window.onload = function () {
+            displayCities();
+        };
+
+        // Function to open the quiz pop-up
+        function openQuiz() {
+            document.getElementById('quizPopup').style.display = 'block';
+        }
+
+        // Function to close the quiz pop-up
+        function closeQuiz() {
+            document.getElementById('quizPopup').style.display = 'none';
+        }
+
+        // Function to retake the quiz
+        function retakeQuiz() {
+            document.getElementById('quizForm').reset();
+            document.getElementById('quizResults').style.display = 'none';
+        }
+
+        // Quiz submission handling
+        document.getElementById('quizForm').addEventListener('submit', function (event) {
+            event.preventDefault(); // Prevent form submission
+
+            // Get user answers
+            const q1 = document.querySelectorAll('input[name="q1"]:checked');
+            const q2 = document.querySelectorAll('input[name="q2"]:checked');
+            const q3 = document.querySelectorAll('input[name="q3"]:checked');
+
+            // Check if all questions are answered
+            if (q1.length > 0 && q2.length > 0 && q3.length > 0) {
+                // Check answers
+                const answers = {
+                    q1: Array.from(q1).map(el => el.value),
+                    q2: Array.from(q2).map(el => el.value),
+                    q3: Array.from(q3).map(el => el.value)
+                };
+
+                // Calculate score
+                let score = 0;
+                const feedback = [];
+
+                if (answers.q1.includes('Berlin')) {
+                    score++;
+                } else {
+                    feedback.push('Question 1: Incorrect. Correct answer is Berlin.');
+                }
+
+                if (answers.q2.includes('Forint')) {
+                    score++;
+                } else {
+                    feedback.push('Question 2: Incorrect. Correct answer is Forint.');
+                }
+
+                if (answers.q3.includes('Vltava')) {
+                    score++;
+                } else {
+                    feedback.push('Question 3: Incorrect. Correct answer is Vltava.');
+                }
+
+                // Display results
+                document.getElementById('quizScore').textContent = `Your score: ${score} out of 3`;
+                document.getElementById('quizFeedback').innerHTML = feedback.map(item => `<li>${item}</li>`).join('');
+                document.getElementById('quizResults').style.display = 'block';
+
+                // Congratulate if all answers are correct
+                if (score === 3) {
+                    swal('Congratulations!', 'You got all the answers correct!', 'success');
+                }
+            } else {
+                // Alert the user to answer all questions
+                swal('Please answer all questions.', '', 'warning');
+            }
+        });
+
+    </script>
+    <footer>
+        <p>© 2024 Earth Scratcher. All rights reserved.</p>
+    </footer>
+</body>
+
+</html>
